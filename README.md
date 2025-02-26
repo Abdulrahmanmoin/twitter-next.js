@@ -4,7 +4,7 @@ This website is a full-stack social media platform inspired by Twitter. It allow
 
 ## Live Demo  
 You can check out the deployed version of this project here:  
-👉 [tweetify.vercel.app](https://twitterzone.vercel.app)
+👉 [twitterzone.vercel.app](https://twitterzone.vercel.app)
 
 
 ## Features
