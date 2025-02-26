@@ -1,4 +1,4 @@
-import mongoose, { Document, model, Schema } from "mongoose";
+import mongoose, { Document, model, models, Schema } from "mongoose";
 
 export interface UserInterface extends Document {
     fullName: string;
@@ -78,4 +78,4 @@ export const userSchema: Schema<UserInterface> = new Schema({
     }
 }, { timestamps: true })
 
-export const UserModel = (mongoose.models.User as mongoose.Model<UserInterface>) || (model<UserInterface>("User", userSchema))
+export const UserModel = (models.User as mongoose.Model<UserInterface>) || (model<UserInterface>("User", userSchema))
