@@ -16,6 +16,7 @@ import { TweetExpandedInterface } from "@/types/TweetExpandedType"
 import { IMAGEKIT_URL_ENDPOINT } from "@/constants"
 import { IKImage } from "imagekitio-next"
 import Image from "next/image"
+import Link from "next/link"
 
 interface UserExpandedInterface extends UserInterface {
   createdAt: Date
@@ -27,7 +28,7 @@ export function ProfileView({ username }: ProfileViewProps) {
   const [isTweetLoading, setIsTweetLoading] = useState(false);
   const [userData, setUserData] = useState<UserExpandedInterface | null>();
   const [isUserDataLoading, setIsUserDataLoading] = useState<boolean>(true);
-  const [isSessionUser, setIsSessionUser] = useState<boolean>(true)
+  const [isSessionUser, setIsSessionUser] = useState<boolean>(false)
   const [followAndUnfollowText, setFollowAndUnfollowText] = useState<"Follow" | "Unfollow">("Follow")
   const [isFollowAndUnfollowLoading, setIsFollowAndUnfollowLoading] = useState<boolean>(false)
   const [followingList, setFollowingList] = useState([])
@@ -199,9 +200,9 @@ export function ProfileView({ username }: ProfileViewProps) {
           {/* Header */}
           <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-md">
             <div className="flex items-center p-4">
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Link href={"/"} className="md:hidden">
                 <ArrowLeft className="h-5 w-5" />
-              </Button>
+              </Link>
               <div className="ml-6">
                 <h1 className="text-xl font-bold">{isSessionUser ? session?.user.name : userData.fullName}</h1>
                 <p className="text-sm text-gray-500">{userData.tweets?.length} posts</p>
@@ -304,7 +305,7 @@ export function ProfileView({ username }: ProfileViewProps) {
               </div>
             </>
           }
-          <div className='flex flex-col' >
+          <div className='flex flex-col mt-8' >
             {
               tweets.map((tweet) => (
                 <div key={tweet._id} className='flex flex-col border border-gray-800 p-1 rounded-lg my-4'>

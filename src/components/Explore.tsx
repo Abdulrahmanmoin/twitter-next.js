@@ -49,8 +49,7 @@ export default function Explore() {
     async function onSubmit() {
         try {
             const inputValue = form.getValues("input")
-            await router.push(`/search?q=${inputValue}`)
-            form.setValue("input", "")
+            router.push(`/search?q=${inputValue}`)
         } catch (error) {
             console.error("Error while submitting a input: ", error);
         }
