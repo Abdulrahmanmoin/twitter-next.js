@@ -11,7 +11,6 @@ export async function GET(req: NextRequest) {
         const url = new URL(req.url)
         const query = url.searchParams.get("q")
 
-
         // Validate the query
         if (!query) {
             return NextResponse.json(

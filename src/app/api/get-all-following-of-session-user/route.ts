@@ -59,7 +59,7 @@ export async function GET() {
         return NextResponse.json(
             {
                 success: false,
-                message: "Failed while unfollowing a user.",
+                message: "Failed while fetching a following list.",
                 error: error
             },
             { status: 500 }

@@ -1,8 +1,13 @@
 import Link from "next/link"
 import { Home, Search, User, MoreHorizontal } from "lucide-react"
 import { Button } from "./ui/button"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/options"
 
-export default function MobileNavigation() {
+export default async function MobileNavigation() {
+
+  const session = await getServerSession(authOptions)
+
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 px-4 py-2">
       <div className="flex justify-around items-center">
@@ -12,7 +17,7 @@ export default function MobileNavigation() {
         <Link href="/explore" className="p-2">
           <Search className="h-6 w-6" />
         </Link>
-        <Link href="/profile" className="p-2">
+        <Link href={`/profile/${session?.user.username}`} className="p-2">
           <User className="h-6 w-6" />
         </Link>
         <Button variant="ghost" className="p-2 ">

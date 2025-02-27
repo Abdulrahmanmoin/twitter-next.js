@@ -31,7 +31,7 @@ export const authOptions: NextAuthOptions = {
                     })
 
                     if (user?.provider === "google") {
-                        throw new Error("This email is registered using Google. Please log in with Google.")
+                        throw new Error("This email is registered using Google. Please log in with Googlee.")
                     }
 
                     if (!user) {

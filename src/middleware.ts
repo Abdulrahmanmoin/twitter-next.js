@@ -4,7 +4,6 @@ import { getToken } from 'next-auth/jwt';
 
 export async function middleware(request: NextRequest) {
     try {
-
         const token = await getToken({ req: request })
         const url = request.nextUrl;
 
@@ -49,7 +48,7 @@ export const config = {
         '/signup',
         '/',
         '/select-username',
-        '/profile',
+        '/profile/:path*', // Correct way to specify wildcard route
         '/explore'
     ]
 }

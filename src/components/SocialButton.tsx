@@ -15,7 +15,7 @@ export default function SocialButton() {
       await signIn("google")
      setTimeout(() => {
       setIsSubmitting(false)
-     }, 1500);
+     }, 4000);
   }
 
   return (

@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
             {
                 success: false,
-                message: "Failed while following a user.",
+                message: "Failed while unfollowing a user.",
                 error: error
             },
             { status: 500 }
