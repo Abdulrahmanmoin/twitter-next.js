@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft } from "lucide-react"
 import PostFeed from "@/components/PostFeed"
 import { useEffect, useState } from "react"
@@ -25,8 +24,9 @@ interface UserExpandedInterface extends UserInterface {
 export function ProfileView({ username }: ProfileViewProps) {
 
   const [tweets, setTweets] = useState<TweetExpandedInterface[]>([]);
+  const [isTweetLoading, setIsTweetLoading] = useState(false);
   const [userData, setUserData] = useState<UserExpandedInterface | null>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isUserDataLoading, setIsUserDataLoading] = useState<boolean>(true);
   const [isSessionUser, setIsSessionUser] = useState<boolean>(true)
   const [followAndUnfollowText, setFollowAndUnfollowText] = useState<"Follow" | "Unfollow">("Follow")
   const [isFollowAndUnfollowLoading, setIsFollowAndUnfollowLoading] = useState<boolean>(false)
@@ -52,6 +52,9 @@ export function ProfileView({ username }: ProfileViewProps) {
     const fetchUserData = async () => {
 
       try {
+
+        setIsUserDataLoading(true)
+
         if (isSessionUser) {
           const response = await axios.post("/api/get-user-data", { userId: session?.user._id })
           setUserData(response.data.user || {})
@@ -75,6 +78,8 @@ export function ProfileView({ username }: ProfileViewProps) {
           description: axiosError.response?.data.message || "",
           variant: "destructive"
         })
+      } finally {
+        setIsUserDataLoading(false)
       }
     }
 
@@ -87,7 +92,7 @@ export function ProfileView({ username }: ProfileViewProps) {
     if ((isSessionUser === null) || !session) return;
 
     const fetchTweets = async () => {
-      setIsLoading(true)
+      setIsTweetLoading(true)
 
       try {
         if (isSessionUser && (session.user.username === username)) {
@@ -107,7 +112,7 @@ export function ProfileView({ username }: ProfileViewProps) {
           variant: "destructive"
         })
       } finally {
-        setIsLoading(false)
+        setIsTweetLoading(false)
       }
     }
 
@@ -279,7 +284,7 @@ export function ProfileView({ username }: ProfileViewProps) {
 
 
           {
-            tweets.length === 0 && isLoading &&
+            tweets.length === 0 && isTweetLoading &&
             <>
               <div className='flex  justify-center items-center min-h-screen'>
                 <Loader2 className="mr-2 h-8 w-8 animate-spin" />
@@ -318,7 +323,15 @@ export function ProfileView({ username }: ProfileViewProps) {
           </div>
         </div>
       )}
-      {!userData && (
+
+      {isUserDataLoading && (
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="mr-2 h-8 w-8 animate-spin" />
+          <p className="text-white font-semibold text-4xl">Loading...</p>
+        </div>
+      )}
+
+      {!userData && (!isUserDataLoading) && (
         <div className="flex items-center justify-center min-h-screen">
           <p className="text-white font-semibold text-4xl">User not found.</p>
         </div>
