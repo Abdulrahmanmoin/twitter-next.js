@@ -189,104 +189,95 @@ export function ProfileView({ username }: ProfileViewProps) {
 
   return (
     <>
-      {userData && (<div className="min-h-screen pb-16 md:pb-0">
-        {/* Header */}
-        <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-md">
-          <div className="flex items-center p-4">
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div className="ml-6">
-              <h1 className="text-xl font-bold">{isSessionUser ? session?.user.name : userData.fullName}</h1>
-              <p className="text-sm text-gray-500">{userData.tweets?.length} posts</p>
+      {userData && (
+        <div className="min-h-screen pb-16 md:pb-0">
+          {/* Header */}
+          <div className="sticky top-0 z-10 bg-black/80 backdrop-blur-md">
+            <div className="flex items-center p-4">
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <div className="ml-6">
+                <h1 className="text-xl font-bold">{isSessionUser ? session?.user.name : userData.fullName}</h1>
+                <p className="text-sm text-gray-500">{userData.tweets?.length} posts</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Profile Header */}
-        <div className="relative">
+          {/* Profile Header */}
+          <div className="relative">
 
-          <div className="absolute left-4 -bottom-16">
-            <div className="rounded-full border-4 border-black w-32 h-32 overflow-hidden">
-              {
-                (defaultProfilePictureLink === session?.user.profilePicture)
-                  || (defaultProfilePictureLink === userData.profilePicture) ?
+            <div className="absolute left-4 -bottom-16">
+              <div className="rounded-full border-4 border-black w-32 h-32 overflow-hidden">
+                {
+                  (defaultProfilePictureLink === session?.user.profilePicture)
+                    || (defaultProfilePictureLink === userData.profilePicture) ?
 
-                  (
-                    <Image
-                      src={isSessionUser ? session?.user.profilePicture ?? "" : userData.profilePicture ?? ""}
-                      alt="Profile picture"
-                      width={1000}
-                      height={1000}
-                      priority
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <IKImage
-                      urlEndpoint={IMAGEKIT_URL_ENDPOINT}
-                      src={isSessionUser ? session?.user.profilePicture : userData.profilePicture}
-                      width={1000}
-                      height={1000}
-                      alt="Profile picture"
-                      className="rounded-full"
-                    />
-                  )
+                    (
+                      <Image
+                        src={isSessionUser ? session?.user.profilePicture ?? "" : userData.profilePicture ?? ""}
+                        alt="Profile picture"
+                        width={1000}
+                        height={1000}
+                        priority
+                        className="rounded-full"
+                      />
+                    ) : (
+                      <IKImage
+                        urlEndpoint={IMAGEKIT_URL_ENDPOINT}
+                        src={isSessionUser ? session?.user.profilePicture : userData.profilePicture}
+                        width={1000}
+                        height={1000}
+                        alt="Profile picture"
+                        className="rounded-full"
+                      />
+                    )
+                }
+              </div>
+            </div>
+            <div className="flex justify-end p-4 space-x-2">
+              {isSessionUser && (<MoreOptionsDialogButton />)}
+              {!isSessionUser && (
+                <Button
+                  variant="outline"
+                  onClick={handleFollow}
+                  disabled={isFollowAndUnfollowLoading}
+                  className="rounded-full">
+
+                  {isFollowAndUnfollowLoading ?
+                    <Loader2 className="animate-spin" />
+                    : followAndUnfollowText}
+                </Button>)
               }
             </div>
           </div>
-          <div className="flex justify-end p-4 space-x-2">
-            {isSessionUser && (<MoreOptionsDialogButton />)}
-            {!isSessionUser && (
-              <Button
-                variant="outline"
-                onClick={handleFollow}
-                disabled={isFollowAndUnfollowLoading}
-                className="rounded-full">
 
-                {isFollowAndUnfollowLoading ?
-                  <Loader2 className="animate-spin" />
-                  : followAndUnfollowText}
-              </Button>)
-            }
-          </div>
-        </div>
+          {/* Profile Info */}
+          <div className="px-4 mt-16 space-y-4">
+            <div>
+              <h2 className="text-xl font-bold">{isSessionUser ? session?.user.name : userData.fullName}</h2>
+              <p className="text-gray-500">@{isSessionUser ? session?.user.username : userData.username}</p>
+            </div>
 
-        {/* Profile Info */}
-        <div className="px-4 mt-16 space-y-4">
-          <div>
-            <h2 className="text-xl font-bold">{isSessionUser ? session?.user.name : userData.fullName}</h2>
-            <p className="text-gray-500">@{isSessionUser ? session?.user.username : userData.username}</p>
-          </div>
-
-          <div className="flex flex-wrap gap-y-1 text-gray-500 text-sm">
-            <div className="flex items-center mr-4">
-              <span className="mr-2">📅</span>
-              Joined {formattedDate}
+            <div className="flex flex-wrap gap-y-1 text-gray-500 text-sm">
+              <div className="flex items-center mr-4">
+                <span className="mr-2">📅</span>
+                Joined {formattedDate}
+              </div>
+            </div>
+            <div className="flex space-x-4">
+              <button className="hover:underline">
+                <span className="font-bold">{userData.following?.length || 0}</span> <span className="text-gray-500">Following</span>
+              </button>
+              <button className="hover:underline">
+                <span className="font-bold">{userData.followers?.length || 0}</span> <span className="text-gray-500">Followers</span>
+              </button>
             </div>
           </div>
-          <div className="flex space-x-4">
-            <button className="hover:underline">
-              <span className="font-bold">{userData.following?.length || 0}</span> <span className="text-gray-500">Following</span>
-            </button>
-            <button className="hover:underline">
-              <span className="font-bold">{userData.followers?.length || 0}</span> <span className="text-gray-500">Followers</span>
-            </button>
-          </div>
-        </div>
 
-        {/* Tabs */}
-        <Tabs defaultValue="posts" className="mt-4">
-          <TabsList className="w-full justify-start border-b border-gray-800 bg-transparent h-auto p-0">
-            {["Posts", "Replies", "Highlights", "Media"].map((tab) => (
-              <TabsTrigger
-                key={tab}
-                value={tab.toLowerCase()}
-                className="flex-1 md:flex-none px-6 py-4 rounded-none data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-500"
-              >
-                {tab}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          {/* Tabs */}
+
+
           {
             tweets.length === 0 && isLoading &&
             <>
@@ -311,7 +302,7 @@ export function ProfileView({ username }: ProfileViewProps) {
           <div className='flex flex-col' >
             {
               tweets.map((tweet) => (
-                <div key={tweet._id} className='flex flex-col border border-gray-800 p-4 rounded-lg my-4'>
+                <div key={tweet._id} className='flex flex-col border border-gray-800 p-1 rounded-lg my-4'>
                   <PostFeed
                     name={isSessionUser ? session?.user?.name ?? "" : userData.fullName ?? ""}
                     username={isSessionUser ? session?.user?.username ?? "" : userData.username ?? ""}
@@ -325,9 +316,8 @@ export function ProfileView({ username }: ProfileViewProps) {
               ))
             }
           </div>
-        </Tabs>
-      </div>)
-      }
+        </div>
+      )}
       {!userData && (
         <div className="flex items-center justify-center min-h-screen">
           <p className="text-white font-semibold text-4xl">User not found.</p>
