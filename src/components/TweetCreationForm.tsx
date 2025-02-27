@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
-
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -24,7 +23,7 @@ import { useSession } from "next-auth/react"
 import { X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import RefinePost from "./RefinePost"
-import { IKImage } from "imagekitio-next"
+import { IKImage, IKVideo } from "imagekitio-next"
 import { IMAGEKIT_URL_ENDPOINT } from "@/constants"
 
 export function TweetCreationForm() {
@@ -166,10 +165,17 @@ export function TweetCreationForm() {
                         )}
                         {mediaType === "video" && (
                             <div className="relative mt-2 rounded-2xl overflow-hidden">
-                                <video
+                                {/* <video
                                     src={mediaUrl}
                                     controls
                                     className="max-h-80 w-full object-cover"
+                                /> */}
+                                <IKVideo
+                                    urlEndpoint={IMAGEKIT_URL_ENDPOINT}
+                                    // path={mediaLink}
+                                    src={mediaUrl}
+                                    transformation={[{ height: "200", width: "200" }]}
+                                    controls={true}
                                 />
                                 <Button
                                     type="button"

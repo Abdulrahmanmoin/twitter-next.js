@@ -3,6 +3,7 @@ import { Home, Search, User, MoreHorizontal } from "lucide-react"
 import { Button } from "./ui/button"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options"
+import { MoreOptionsDialogButton } from "./MoreOptionsDialog"
 
 export default async function MobileNavigation() {
 
@@ -20,9 +21,9 @@ export default async function MobileNavigation() {
         <Link href={`/profile/${session?.user.username}`} className="p-2">
           <User className="h-6 w-6" />
         </Link>
-        <Button variant="ghost" className="p-2 ">
-          <MoreHorizontal className="h-6 w-6" />
-        </Button>
+        {/* <Button variant="ghost" className="p-2 "> */}
+          <MoreOptionsDialogButton />
+        {/* </Button> */}
       </div>
     </nav>
   )

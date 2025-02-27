@@ -46,11 +46,10 @@ export default function SearchAndTrends() {
   })
 
   //  Submit handler for search form.
-  async function onSubmit() {
+  function onSubmit() {
     try {
       const inputValue = form.getValues("input")
-      await router.push(`/search?q=${inputValue}`)
-      form.setValue("input", "")
+      router.push(`/search?q=${inputValue}`)
     } catch (error) {
       console.error("Error while submitting a input: ", error);
     }
@@ -104,10 +103,12 @@ export default function SearchAndTrends() {
             <div key={trend._id} className="py-3 group">
               <div>
                 <Button
-                  type="button"
+                  type="submit"
                   variant="link"
                   className="p-0"
-                  onClick={() => form.setValue("input", trend._id)}
+                  onClick={() => {
+                    form.setValue("input", trend._id)
+                  }}
                 >
                   <p className="font-bold">#{trend._id}</p>
                 </Button>

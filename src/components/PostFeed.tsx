@@ -3,6 +3,8 @@ import { IKImage } from "imagekitio-next"
 import Image from "next/image"
 import LikeTweet from "./LikeTweet"
 import Link from "next/link"
+import { IKVideo } from "imagekitio-next";
+import { useEffect, useState } from "react"
 
 interface PostFeedProps {
   name: string
@@ -24,10 +26,21 @@ export default function PostFeed({
   tweetId
 }: PostFeedProps) {
 
+  const [isMediaImage, setIsMediaImage] = useState<boolean>(true)
+
   // Convert the date string to a Date object
   const dateObj = new Date(createdAt)
   // Format the date to extract only the month and date
   const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: "2-digit" })
+
+  useEffect(() => {
+    const handleImageOrVideo = () => {
+      const splittedMediaLink = mediaLink?.split("/");
+      setIsMediaImage(splittedMediaLink?.includes("images") || false)
+    }
+    handleImageOrVideo()
+  }, [mediaLink])
+
 
   return (
 
@@ -46,7 +59,9 @@ export default function PostFeed({
               <div className="flex flex-col sm:flex-row sm:items-center space-x-1">
                 {/* for mobile */}
                 <div className="flex items-center gap-x-2 sm:hidden">
-                  <span className="font-bold hover:underline">{name}</span>
+                  <Link href={`/profile/${username}`}>
+                    <span className="font-bold hover:underline">{name}</span>
+                  </Link>
                   <svg className="h-4 w-4 text-blue-500" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
@@ -76,14 +91,23 @@ export default function PostFeed({
             </p>
             {mediaLink && (
               <div className="mt-4 rounded-xl overflow-hidden">
-                <IKImage
-                  urlEndpoint={IMAGEKIT_URL_ENDPOINT}
-                  src={mediaLink}
-                  width="400"
-                  height="400"
-                  alt="Post media"
-                  className="w-full"
-                />
+                {isMediaImage ? (
+                  <IKImage
+                    urlEndpoint={IMAGEKIT_URL_ENDPOINT}
+                    src={mediaLink}
+                    width="400"
+                    height="400"
+                    alt="Post media"
+                    className="w-full"
+                  />) : (
+                  <IKVideo
+                    urlEndpoint={IMAGEKIT_URL_ENDPOINT}
+                    src={mediaLink}
+                    transformation={[{ height: "200", width: "200" }]}
+                    controls={true}
+                  />
+                )
+                }
               </div>
             )}
             <div className="flex justify-between mt-4 text-gray-500">
