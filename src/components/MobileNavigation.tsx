@@ -1,6 +1,5 @@
 import Link from "next/link"
-import { Home, Search, User, MoreHorizontal } from "lucide-react"
-import { Button } from "./ui/button"
+import { Home, Search, User } from "lucide-react"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options"
 import { MoreOptionsDialogButton } from "./MoreOptionsDialog"

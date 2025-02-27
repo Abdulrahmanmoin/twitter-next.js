@@ -19,7 +19,10 @@ async function dbConnect(): Promise<void> {
 
         connection.isConnection = db.connections[0].readyState
 
+        // Making both mongoose models register  - (suppress unused expression warning)
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         UserModel;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         TweetModel;
 
     } catch (error) {
